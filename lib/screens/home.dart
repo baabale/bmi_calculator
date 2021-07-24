@@ -1,7 +1,11 @@
 import 'package:bmi_calculator/constants.dart';
+import 'package:bmi_calculator/screens/result.dart';
 import 'package:bmi_calculator/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'dart:math';
+
+enum Gender { male, female }
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,6 +16,22 @@ class _HomeScreenState extends State<HomeScreen> {
   double height = 180;
   int weight = 65;
   int age = 20;
+
+  Gender selectedGender = Gender.male;
+
+  void _goToResultScreen() {
+    // Todo: Calculate BMI RESULT
+    double _result = weight / pow(height / 100, 2);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ResultScreen(
+          result: _result,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +47,12 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Expanded(
                   child: ReusableCard(
+                    selected: selectedGender == Gender.male ? true : false,
+                    onPressed: () {
+                      setState(() {
+                        selectedGender = Gender.male;
+                      });
+                    },
                     child: IconContent(
                       iconData: FontAwesomeIcons.mars,
                       title: 'MALE',
@@ -35,6 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Expanded(
                   child: ReusableCard(
+                    selected: selectedGender == Gender.female ? true : false,
+                    onPressed: () {
+                      setState(() {
+                        selectedGender = Gender.female;
+                      });
+                    },
                     child: IconContent(
                       iconData: FontAwesomeIcons.venus,
                       title: 'FEMALE',
@@ -93,7 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       onChanged: (newVal) {
                         setState(() {
                           height = newVal;
-                          print(height);
                         });
                       },
                     ),
@@ -218,21 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          RawMaterialButton(
-            onPressed: () {},
-            child: Text(
-              'CALCULATE',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            fillColor: kBottomContainerColour,
-            constraints: BoxConstraints.tightFor(
-              width: double.infinity,
-              height: 56,
-            ),
-          ),
+          CustomButton(onPressed: _goToResultScreen),
         ],
       ),
     );
