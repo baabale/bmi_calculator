@@ -6,6 +6,17 @@ class ResultScreen extends StatelessWidget {
 
   const ResultScreen({Key? key, required this.result}) : super(key: key);
 
+  String intranslateResult() {
+    if (result >= 0 && result <= 18)
+      return 'You\'re Underweight 😔';
+    else if (result >= 19 && result <= 25)
+      return 'You\'re in shape (Normal or Healthy Weight) 😊';
+    else if (result >= 26 && result <= 29)
+      return 'You\'re Overweight 😔';
+    else
+      return 'You\'re Obese 😔';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +59,13 @@ class ResultScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Center(
                     child: Text(
-                      'You are thin😔',
+                      intranslateResult(),
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                         color: Colors.grey.shade400,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
@@ -61,7 +73,7 @@ class ResultScreen extends StatelessWidget {
             ),
           ),
           CustomButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pop(context),
             title: 'Re-calculate',
           )
         ],
